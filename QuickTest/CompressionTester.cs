@@ -31,7 +31,6 @@ namespace QuickTest
             {
                 using (var outStream = new MemoryStream())
                 {
-
                     using (var gzipStream = new GZipStream(inStream, CompressionMode.Decompress))
                     {
                         var buffer = new byte[bufferSize];
