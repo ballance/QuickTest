@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace QuickTest
 {
-
     public class CompressionTester
     {
         public static int bufferSize = 32768;
