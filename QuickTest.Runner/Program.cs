@@ -59,8 +59,6 @@ namespace QuickTest.Runner
 
             Console.WriteLine("Compression took {0} ms.", compressionTimer.ElapsedMilliseconds);
             Console.WriteLine("Decompression took {0} ms.", decompressionTimer.ElapsedMilliseconds);
-
-            Console.ReadKey();
         }
     }
 }
