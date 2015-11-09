@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace QuickTest.Runner
 {
@@ -8,7 +11,24 @@ namespace QuickTest.Runner
     {
         static void Main()
         {
-            FileExtensionTestRunner();
+            CRCTestRunner();
+            Console.ReadKey();
+        }
+
+        private static void CRCTestRunner()
+        {
+            var bytesToCrc = new byte[]         { 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47 };
+            var bytesToCrcOffByOne = new byte[] { 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47 };
+            var crc_guy = new CRC.Crc32();
+            var madeSomeCrc = crc_guy.ComputeHash(bytesToCrc);
+            var madeSomeCrcOffByOne = crc_guy.ComputeHash(bytesToCrcOffByOne);
+          
+            Console.WriteLine("before not off by one: {0}", Encoding.ASCII.GetString(bytesToCrc));
+            Console.WriteLine("before is off by one:  {0}", Encoding.ASCII.GetString(bytesToCrcOffByOne));
+            Console.WriteLine("not off one: {0}", Encoding.ASCII.GetString(madeSomeCrc));
+            Console.WriteLine("Off by one:  {0}", Encoding.ASCII.GetString(madeSomeCrcOffByOne));
+            Console.WriteLine();
+            Console.WriteLine("Are equal? {0}", madeSomeCrc.SequenceEqual(madeSomeCrcOffByOne));
             Console.ReadKey();
         }
 
