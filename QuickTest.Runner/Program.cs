@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -19,12 +20,24 @@ namespace QuickTest.Runner
         {
             var bytesToCrc = new byte[]         { 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47 };
             var bytesToCrcOffByOne = new byte[] { 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47, 56, 54, 55, 53, 51, 48, 57, 47 };
+
             var crc_guy = new CRC.Crc32();
-            var madeSomeCrc = crc_guy.ComputeHash(bytesToCrc);
-            var madeSomeCrcOffByOne = crc_guy.ComputeHash(bytesToCrcOffByOne);
-          
+
+            byte[] madeSomeCrc;
+            using (var bytesToCrCMemStream = new MemoryStream(bytesToCrc))
+            {
+                  madeSomeCrc = crc_guy.ComputeHash(bytesToCrCMemStream);
+            }
+
+            byte[] madeSomeCrcOffByOne;
+            using (var bytesToCrCOffByOneMemStream = new MemoryStream(bytesToCrcOffByOne))
+            {
+                madeSomeCrcOffByOne = crc_guy.ComputeHash(bytesToCrCOffByOneMemStream);
+            }
+
             Console.WriteLine("before not off by one: {0}", Encoding.ASCII.GetString(bytesToCrc));
             Console.WriteLine("before is off by one:  {0}", Encoding.ASCII.GetString(bytesToCrcOffByOne));
+
             Console.WriteLine("not off one: {0}", Encoding.ASCII.GetString(madeSomeCrc));
             Console.WriteLine("Off by one:  {0}", Encoding.ASCII.GetString(madeSomeCrcOffByOne));
             Console.WriteLine();
